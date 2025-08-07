@@ -32,3 +32,5 @@ Run the notebook cell and view or download the generated music.
 **Requirements**
 
 Google Colab or a local Python environment with LilyPond 2.22.1 installed.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/xafer-gab/leitura_a_primeira_vista/blob/main/Leitura_%C3%A0_primeira_vista_(LilyPond).ipynb)
