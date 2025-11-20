@@ -11,7 +11,7 @@ def permuta(lista, tipo="permuta"):
     elif tipo == "seleciona":
         return random.choice(lista)
     else:
-        raise ValueError("Tipo inválido.")
+        raise ValueError("Tipos: 'permuta' e 'seleciona'")
 
 def gera_lista_dur(duracoes_lis):
 	dur_sele = []
@@ -131,3 +131,4 @@ def nota_randomica(fund, modo, modelo, n_notas, clave, oitavas, pausa_probab=20)
             alturas.append(nota+oit)
             
     return alturas
+
