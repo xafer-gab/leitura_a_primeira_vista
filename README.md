@@ -29,7 +29,7 @@ A comprehensive web application for musicians and music students to practice sig
 ## 🚀 Quick Start
 
 ### Option 1: Google Colab (Recommended)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/xafer-gab/leitura_a_primeira_vista/blob/feat/first-refactor/Leitura_%C3%A0_primeira_vista_(LilyPond).ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/xafer-gab/leitura_a_primeira_vista/blob/main/Leitura_%C3%A0_primeira_vista_(LilyPond).ipynb)
 
 1. Click the badge above to open in Google Colab
 2. Run the setup cell (installs dependencies)
