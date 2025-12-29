@@ -165,4 +165,4 @@ def interface(func):
             outputs=[output_image, midi_audio, info_text],
         )
 
-    demo.launch()
+    demo.launch(debug=True)
