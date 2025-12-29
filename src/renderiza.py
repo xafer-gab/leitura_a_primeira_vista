@@ -41,7 +41,7 @@ def comp_lily(
 
     # Gera script lilypond
     lilypond_codigo = f"""
-    \\version "2.24.4"
+    \\version "2.22.0"
     #(set-global-staff-size 17)
     \\paper {{
         #(set-paper-size "a6")
