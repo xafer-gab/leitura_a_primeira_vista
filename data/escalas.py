@@ -1,9 +1,9 @@
-#Listas de oitavas para cada clave
+# Listas de oitavas para cada clave
 c_sol = ["'", "''", "'''"]
 c_do = ["", "'", "''"]
 c_fa = ["", ",", ",,"]
 
-#Dicionário de notas -> classes de alturas
+# Dicionário de notas -> classes de alturas
 dici_alt = {
     "Dó": 0,
     "Dó#": 1,
@@ -21,10 +21,10 @@ dici_alt = {
     "Lá": 9,
     "Lá#": 10,
     "Sib": 10,
-    "Si": 11
-    }
+    "Si": 11,
+}
 
-#Dicionário de notas -> lilypond
+# Dicionário de notas -> lilypond
 dici_alt_lily = {
     "Dó": "c",
     "Dó#": "cis",
@@ -42,15 +42,28 @@ dici_alt_lily = {
     "Lá": "a",
     "Lá#": "ais",
     "Sib": "bes",
-    "Si": "b"
-    }
+    "Si": "b",
+}
 
-#Lista de notas
-c_alt_sus = ["c", "cis", "d", "dis", "e", "eis", "fis", "g", "gis", "a", "ais", "b"]  
+# Lista de notas
+c_alt_sus = ["c", "cis", "d", "dis", "e", "eis", "fis", "g", "gis", "a", "ais", "b"]
 c_alt_bem = ["c", "des", "d", "ees", "e", "f", "ges", "g", "aes", "a", "bes", "ces"]
-c_alt_dodec = ["!c", "!cis", "!d", "!ees", "!e", "!f", "!fis", "!g", "!aes", "!a", "!bes", "!b"] 
+c_alt_dodec = [
+    "!c",
+    "!cis",
+    "!d",
+    "!ees",
+    "!e",
+    "!f",
+    "!fis",
+    "!g",
+    "!aes",
+    "!a",
+    "!bes",
+    "!b",
+]
 
-#Escalas
+# Escalas
 cromatico = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 octofonico = [2, 1, 2, 1, 2, 1, 2]
 maior = [2, 2, 1, 2, 2, 2]
@@ -62,8 +75,9 @@ dici_escalas = {
     "Octofônica": [2, 1, 2, 1, 2, 1, 2],
     "Maior": [2, 2, 1, 2, 2, 2],
     "Hexafônica": [2, 2, 2, 2, 2],
-    "Pentatônica": [2, 2, 3, 2]
-    }
+    "Pentatônica": [2, 2, 3, 2],
+}
+
 
 def escala(fund, escala):
     fundamental = dici_alt[fund]
@@ -77,12 +91,25 @@ def escala(fund, escala):
             c_lis = c_alt_sus[:]
             c_lis[5] = "f"
         elif fund in ["Dó#", "Ré#", "Sol#", "Lá#"]:
-            c_lis = ["bis", "cis", "cisis", "dis", "e", "eis", "fis", "fisis", "gis", "a", "ais", "b"]
+            c_lis = [
+                "bis",
+                "cis",
+                "cisis",
+                "dis",
+                "e",
+                "eis",
+                "fis",
+                "fisis",
+                "gis",
+                "a",
+                "ais",
+                "b",
+            ]
             if fund == "Lá#":
                 c_lis[9] = "gisis"
         else:
             c_lis = c_alt_sus[:]
-    
+
     escala_final = []
     escala_final.append(c_lis[fundamental])
     for i in range(len(escala_inter)):
@@ -91,7 +118,8 @@ def escala(fund, escala):
         fundamental = prox_alt
     return escala_final
 
-#Modelos harmônicos probabilísticos
+
+# Modelos harmônicos probabilísticos
 modelos_probabilisticos = {
     "Jônio": [0.217, 0.086, 0.173, 0.152, 0.195, 0.108, 0.065],
     "Dórico": [0.065, 0.217, 0.086, 0.173, 0.152, 0.195, 0.108],
@@ -102,5 +130,5 @@ modelos_probabilisticos = {
     "Lócrio": [0.086, 0.173, 0.152, 0.195, 0.108, 0.065, 0.217],
     "Tétrade Maior": [0.181, 0.090, 0.181, 0.090, 0.181, 0.090, 0.181],
     "Tétrade Menor": [0.181, 0.090, 0.181, 0.090, 0.181, 0.181, 0.090],
-    "Aumentado": [0.222, 0.111, 0.222, 0.111, 0.222, 0.111]
+    "Aumentado": [0.222, 0.111, 0.222, 0.111, 0.222, 0.111],
 }

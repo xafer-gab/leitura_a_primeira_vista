@@ -1,0 +1,6 @@
+# Runtime dependencies
+gradio>=4.0.0
+
+# Development dependencies
+pre-commit>=3.0.0
+ruff>=0.1.0
