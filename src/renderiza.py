@@ -4,8 +4,8 @@ from random import randrange
 
 import mido
 
-from data.escalas import dici_alt
 from data.escalas import dici_alt_lily as a_lily
+from data.escalas import lily_to_midi
 
 
 def comp_lily(
@@ -154,17 +154,18 @@ def gera_midi(
             current_time += duration_ticks
         else:
             # Nota musical
-            # Remove aspas e números de oitava do formato LilyPond
+            # Remove modificadores do formato LilyPond
             clean_nota = (
                 nota.replace("'", "")
                 .replace(",", "")
                 .replace("''", "")
                 .replace(",,", "")
+                .replace("!", "")  # Remove o prefixo dodecafônico
             )
 
-            # Converte para número MIDI (C4 = 60)
-            if clean_nota in dici_alt:
-                midi_note = dici_alt[clean_nota]
+            # Converte para número MIDI (C4 = 60) usando o novo mapeamento
+            if clean_nota in lily_to_midi:
+                midi_note = lily_to_midi[clean_nota]
 
                 # Ajusta oitava baseada na clave e modificadores
                 octave = octave_offset

@@ -96,7 +96,9 @@ def interface(func):
                 )
                 with gr.Row():
                     ligadura = gr.Checkbox(label="Ligadura entre compassos?")
-                    midi = gr.Checkbox(label="Gerar MIDI? (Apenas se disponível)")
+                    midi = gr.Checkbox(
+                        label="Gerar MIDI? (Apenas se disponível)", value=True
+                    )
 
                 pausa_p = gr.Slider(
                     minimum=0,
@@ -136,12 +138,12 @@ def interface(func):
             """Gera o exercício e retorna imagem e áudio se MIDI estiver habilitado."""
             png_path, midi_path = func(*args)
 
-            # Se MIDI foi gerado, mostra o componente de áudio
+            # Se MIDI foi gerado, mostra o componente de áudio e inicia autoplay
             if midi_path:
                 return (
                     png_path,
-                    gr.Audio(visible=True, value=midi_path),
-                    {"playing": False, "midi_path": midi_path},
+                    gr.Audio(visible=True, value=midi_path, autoplay=True),
+                    {"playing": True, "midi_path": midi_path},
                 )
             else:
                 return (
@@ -153,7 +155,9 @@ def interface(func):
         def play_midi(state):
             """Inicia a reprodução do MIDI."""
             if state["midi_path"]:
-                return gr.Audio(value=state["midi_path"], visible=True), {
+                return gr.Audio(
+                    value=state["midi_path"], visible=True, autoplay=True
+                ), {
                     "playing": True,
                     "midi_path": state["midi_path"],
                 }
