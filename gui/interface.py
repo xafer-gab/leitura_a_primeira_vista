@@ -106,6 +106,13 @@ def interface(func):
                     label="Probabilidade de pausas (%)",
                 )
                 num_comp = gr.Dropdown([4, 8, 16], label="Número de compassos", value=8)
+                tempo_bpm = gr.Slider(
+                    minimum=60,
+                    maximum=200,
+                    value=120,
+                    step=10,
+                    label="Tempo (BPM)",
+                )
                 diretorio = gr.Textbox(
                     label="Diretório de saída (opcional)",
                     placeholder="Padrão: diretório temporário",
@@ -114,8 +121,57 @@ def interface(func):
         submit_btn = gr.Button("Gerar Exercício", variant="primary")
         output_image = gr.Image(label="Partitura Gerada")
 
+        # Controles de reprodução MIDI
+        with gr.Row():
+            play_btn = gr.Button("▶️ Play", variant="secondary")
+            pause_btn = gr.Button("⏸️ Pause", variant="secondary")
+            stop_btn = gr.Button("⏹️ Stop", variant="secondary")
+
+        midi_audio = gr.Audio(label="Reprodução MIDI", visible=False)
+
+        # Estado para controlar a reprodução
+        playback_state = gr.State({"playing": False, "midi_path": None})
+
+        def generate_exercise(*args):
+            """Gera o exercício e retorna imagem e áudio se MIDI estiver habilitado."""
+            png_path, midi_path = func(*args)
+
+            # Se MIDI foi gerado, mostra o componente de áudio
+            if midi_path:
+                return (
+                    png_path,
+                    gr.Audio(visible=True, value=midi_path),
+                    {"playing": False, "midi_path": midi_path},
+                )
+            else:
+                return (
+                    png_path,
+                    gr.Audio(visible=False),
+                    {"playing": False, "midi_path": None},
+                )
+
+        def play_midi(state):
+            """Inicia a reprodução do MIDI."""
+            if state["midi_path"]:
+                return gr.Audio(value=state["midi_path"], visible=True), {
+                    "playing": True,
+                    "midi_path": state["midi_path"],
+                }
+            return gr.Audio(visible=False), state
+
+        def pause_midi(state):
+            """Pausa a reprodução do MIDI."""
+            return gr.Audio(visible=True), {
+                "playing": False,
+                "midi_path": state["midi_path"],
+            }
+
+        def stop_midi(state):
+            """Para a reprodução do MIDI."""
+            return gr.Audio(visible=False), {"playing": False, "midi_path": None}
+
         submit_btn.click(
-            fn=func,
+            fn=generate_exercise,
             inputs=[
                 fundamental,
                 escala,
@@ -129,8 +185,27 @@ def interface(func):
                 num_comp,
                 diretorio,
                 midi,
+                tempo_bpm,
             ],
-            outputs=output_image,
+            outputs=[output_image, midi_audio, playback_state],
+        )
+
+        play_btn.click(
+            fn=play_midi,
+            inputs=playback_state,
+            outputs=[midi_audio, playback_state],
+        )
+
+        pause_btn.click(
+            fn=pause_midi,
+            inputs=playback_state,
+            outputs=[midi_audio, playback_state],
+        )
+
+        stop_btn.click(
+            fn=stop_midi,
+            inputs=playback_state,
+            outputs=[midi_audio, playback_state],
         )
 
     demo.launch()

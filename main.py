@@ -21,8 +21,13 @@ def gera_formata_renderiza(
     num_comp: int,
     diretorio: str,
     midi: bool = False,
-) -> str:
-    """Função principal que integra a geração, formatação e renderização musical."""
+    tempo_bpm: int = 120,
+) -> tuple[str, str | None]:
+    """Função principal que integra a geração, formatação e renderização musical.
+
+    Returns:
+        Tuple de (caminho_png, caminho_midi) onde caminho_midi pode ser None
+    """
 
     if not diretorio:
         diretorio = DEFAULT_DIR
@@ -50,9 +55,16 @@ def gera_formata_renderiza(
     )
 
     # Exportação (sempre em PNG para visualização na interface)
-    caminho_arquivo = renderiza.exporta(l_script, diretorio, formato="png")
+    caminho_png = renderiza.exporta(l_script, diretorio, formato="png")
 
-    return caminho_arquivo
+    # Geração MIDI se solicitado
+    caminho_midi = None
+    if midi:
+        caminho_midi = renderiza.gera_midi(
+            alturas_rand, duracoes_rand, clave, diretorio, tempo_bpm=tempo_bpm
+        )
+
+    return caminho_png, caminho_midi
 
 
 if __name__ == "__main__":
