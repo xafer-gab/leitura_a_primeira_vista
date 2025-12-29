@@ -20,7 +20,6 @@ def gera_formata_renderiza(
     pausa_p: int,
     num_comp: int,
     diretorio: str,
-    midi: bool = False,
     tempo_bpm: int = 120,
 ) -> tuple[str, str | None]:
     """Função principal que integra a geração, formatação e renderização musical.
@@ -51,21 +50,19 @@ def gera_formata_renderiza(
 
     notas = formata.dur_formata(duracoes_rand, alturas_rand, f_c[0], f_c[1])
     l_script = renderiza.comp_lily(
-        notas, clave, fundamental, escala, form_comp, midi=midi
+        notas, clave, fundamental, escala, form_comp, midi=True
     )
 
     # Exportação (sempre em PNG para visualização na interface)
     caminho_png = renderiza.exporta(l_script, diretorio, formato="png")
 
-    # Geração MIDI e Áudio se solicitado
-    caminho_audio = None
-    if midi:
-        caminho_midi = renderiza.gera_midi(
-            alturas_rand, duracoes_rand, clave, diretorio, tempo_bpm=tempo_bpm
-        )
-        # Converte MIDI para WAV para que o navegador possa tocar
-        caminho_audio = caminho_midi.replace(".mid", ".wav")
-        caminho_audio = renderiza.midi_para_audio(caminho_midi, caminho_audio)
+    # Geração MIDI e Áudio automática
+    caminho_midi = renderiza.gera_midi(
+        alturas_rand, duracoes_rand, clave, diretorio, tempo_bpm=tempo_bpm
+    )
+    # Converte MIDI para WAV para que o navegador possa tocar
+    caminho_audio = caminho_midi.replace(".mid", ".wav")
+    caminho_audio = renderiza.midi_para_audio(caminho_midi, caminho_audio)
 
     return caminho_png, caminho_audio
 

@@ -96,9 +96,6 @@ def interface(func):
                 )
                 with gr.Row():
                     ligadura = gr.Checkbox(label="Ligadura entre compassos?")
-                    midi = gr.Checkbox(
-                        label="Gerar MIDI? (Apenas se disponível)", value=True
-                    )
 
                 pausa_p = gr.Slider(
                     minimum=0,
@@ -163,7 +160,6 @@ def interface(func):
                 pausa_p,
                 num_comp,
                 diretorio,
-                midi,
                 tempo_bpm,
             ],
             outputs=[output_image, midi_audio, info_text],
