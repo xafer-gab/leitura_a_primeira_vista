@@ -135,13 +135,6 @@ def gera_midi(
     # Define o instrumento (piano acústico)
     track.append(mido.Message("program_change", program=0, time=0))
 
-    # Mapeamento de oitavas baseado na clave
-    octave_offset = {
-        "Sol": 4,  # Clave de Sol: oitava central
-        "Fá": 3,  # Clave de Fá: oitava abaixo
-        "Dó": 4,  # Clave de Dó: oitava central
-    }.get(clave, 4)
-
     current_time = 0
 
     for nota, dur in zip(notas, duracoes, strict=False):
@@ -155,45 +148,49 @@ def gera_midi(
             current_time += duration_ticks
         else:
             # Nota musical
-            # Remove modificadores do formato LilyPond
+            # Remove modificadores do formato LilyPond para obter o nome da nota
             clean_nota = (
                 nota.replace("'", "")
                 .replace(",", "")
                 .replace("''", "")
                 .replace(",,", "")
-                .replace("!", "")  # Remove o prefixo dodecafônico
+                .replace("!", "")
             )
 
-            # Converte para número MIDI (C4 = 60) usando o novo mapeamento
+            # Converte para número MIDI usando o mapeamento lily_to_midi
             if clean_nota in lily_to_midi:
-                midi_note = lily_to_midi[clean_nota]
+                base_semitone = lily_to_midi[clean_nota]
 
-                # Ajusta oitava baseada na clave e modificadores
-                octave = octave_offset
-                if "'" in nota:
-                    octave += nota.count("'")
-                elif "," in nota:
-                    octave -= nota.count(",")
+                # No LilyPond, 'c' sem aspas é C3 (MIDI 48)
+                # 'c'' é C4 (MIDI 60), 'c''' é C5 (MIDI 72)
+                # 'c,' é C2 (MIDI 36), 'c,,' é C1 (MIDI 24)
+                # Portanto, a oitava base é 3.
+                octave = 3
+                octave += nota.count("'")
+                octave -= nota.count(",")
 
-                midi_note += (octave - 4) * 12  # 4 é a oitava central
+                # Cálculo do número MIDI: (Oitava + 1) * 12 + semitom
+                # Ex: C4 -> (4+1)*12 + 0 = 60
+                midi_note = (octave + 1) * 12 + base_semitone
 
                 # Garante que a nota esteja no range MIDI válido (0-127)
                 midi_note = max(0, min(127, midi_note))
 
                 # Adiciona mensagens note_on e note_off
+                # O parâmetro 'time' é o delta desde a última mensagem
                 track.append(
                     mido.Message(
-                        "note_on", note=midi_note, velocity=64, time=current_time
+                        "note_on", note=midi_note, velocity=80, time=current_time
                     )
                 )
                 track.append(
                     mido.Message(
-                        "note_off", note=midi_note, velocity=64, time=duration_ticks
+                        "note_off", note=midi_note, velocity=80, time=duration_ticks
                     )
                 )
                 current_time = 0
             else:
-                # Se não conseguir mapear a nota, apenas avança o tempo
+                # Se não conseguir mapear a nota, trata como pausa
                 current_time += duration_ticks
 
     # Salva o arquivo MIDI
@@ -237,7 +234,12 @@ def midi_para_audio(midi_path: str, wav_path: str) -> str | None:
 
     try:
         FluidSynth(sf2).midi_to_audio(midi_path, wav_path)
-        return wav_path
+        # Verifica se o arquivo foi criado e não está vazio
+        if Path(wav_path).exists() and Path(wav_path).stat().st_size > 0:
+            return wav_path
+        else:
+            print("Erro: Arquivo de áudio gerado está vazio.")
+            return None
     except Exception as e:
         print(f"Erro na síntese de áudio: {e}")
         return None
