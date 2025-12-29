@@ -3,6 +3,7 @@ from pathlib import Path
 from random import randrange
 
 import mido
+from midi2audio import FluidSynth
 
 from data.escalas import dici_alt_lily as a_lily
 from data.escalas import lily_to_midi
@@ -204,3 +205,29 @@ def gera_midi(
 
     mid.save(str(midi_path))
     return str(midi_path)
+
+
+def midi_para_audio(midi_path: str, wav_path: str) -> str:
+    """
+    Sintetiza um arquivo MIDI em um arquivo WAV usando FluidSynth.
+    """
+    # Procura por SoundFonts comuns no sistema (Colab/Linux)
+    soundfonts = [
+        "/usr/share/sounds/sf2/FluidR3_GM.sf2",
+        "/usr/share/sounds/sf2/FluidR3_GS.sf2",
+        "/usr/share/sounds/sf2/fluid-soundfont-gm.sf2",
+    ]
+
+    sf2 = next((sf for sf in soundfonts if Path(sf).exists()), None)
+
+    if not sf2:
+        # Se não encontrar SoundFont, o som não será gerado mas o app não deve travar
+        print("Aviso: SoundFont não encontrado. A síntese de áudio pode falhar.")
+        return midi_path
+
+    try:
+        FluidSynth(sf2).midi_to_audio(midi_path, wav_path)
+        return wav_path
+    except Exception as e:
+        print(f"Erro na síntese de áudio: {e}")
+        return midi_path

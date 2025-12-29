@@ -132,47 +132,47 @@ def interface(func):
         midi_audio = gr.Audio(label="Reprodução MIDI", visible=False)
 
         # Estado para controlar a reprodução
-        playback_state = gr.State({"playing": False, "midi_path": None})
+        playback_state = gr.State({"playing": False, "audio_path": None})
 
         def generate_exercise(*args):
             """Gera o exercício e retorna imagem e áudio se MIDI estiver habilitado."""
-            png_path, midi_path = func(*args)
+            png_path, audio_path = func(*args)
 
-            # Se MIDI foi gerado, mostra o componente de áudio e inicia autoplay
-            if midi_path:
+            # Se áudio foi gerado, mostra o componente de áudio
+            if audio_path:
                 return (
                     png_path,
-                    gr.Audio(visible=True, value=midi_path, autoplay=True),
-                    {"playing": True, "midi_path": midi_path},
+                    gr.Audio(visible=True, value=audio_path, autoplay=True),
+                    {"playing": True, "audio_path": audio_path},
                 )
             else:
                 return (
                     png_path,
                     gr.Audio(visible=False),
-                    {"playing": False, "midi_path": None},
+                    {"playing": False, "audio_path": None},
                 )
 
         def play_midi(state):
-            """Inicia a reprodução do MIDI."""
-            if state["midi_path"]:
+            """Inicia a reprodução do Áudio."""
+            if state["audio_path"]:
                 return gr.Audio(
-                    value=state["midi_path"], visible=True, autoplay=True
+                    value=state["audio_path"], visible=True, autoplay=True
                 ), {
                     "playing": True,
-                    "midi_path": state["midi_path"],
+                    "audio_path": state["audio_path"],
                 }
             return gr.Audio(visible=False), state
 
         def pause_midi(state):
-            """Pausa a reprodução do MIDI."""
+            """Pausa a reprodução do Áudio."""
             return gr.Audio(visible=True), {
                 "playing": False,
-                "midi_path": state["midi_path"],
+                "audio_path": state["audio_path"],
             }
 
         def stop_midi(state):
-            """Para a reprodução do MIDI."""
-            return gr.Audio(visible=False), {"playing": False, "midi_path": None}
+            """Para a reprodução do Áudio."""
+            return gr.Audio(visible=False), {"playing": False, "audio_path": None}
 
         submit_btn.click(
             fn=generate_exercise,
