@@ -52,10 +52,11 @@ cd leitura_a_primeira_vista
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Install LilyPond (macOS with Homebrew)
-brew install lilypond
+# Install LilyPond and FluidSynth (for audio playback)
+# macOS (with Homebrew)
+brew install lilypond fluidsynth fluid-soundfont-gm
 
-# Or download from https://lilypond.org/ for other platforms
+# Or download from their respective websites for other platforms
 ```
 
 #### Usage

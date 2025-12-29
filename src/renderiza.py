@@ -207,12 +207,23 @@ def gera_midi(
     return str(midi_path)
 
 
-def midi_para_audio(midi_path: str, wav_path: str) -> str:
+def midi_para_audio(midi_path: str, wav_path: str) -> str | None:
     """
     Sintetiza um arquivo MIDI em um arquivo WAV usando FluidSynth.
     """
-    # Procura por SoundFonts comuns no sistema (Colab/Linux)
+    # Verifica se fluidsynth está instalado
+    try:
+        subprocess.run(["fluidsynth", "--version"], capture_output=True, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print("Erro: fluidsynth não encontrado no sistema.")
+        return None
+
+    # Procura por SoundFonts comuns no sistema
     soundfonts = [
+        # macOS (Homebrew)
+        "/opt/homebrew/share/soundfonts/FluidR3_GM.sf2",
+        "/usr/local/share/soundfonts/FluidR3_GM.sf2",
+        # Linux (Debian/Ubuntu)
         "/usr/share/sounds/sf2/FluidR3_GM.sf2",
         "/usr/share/sounds/sf2/FluidR3_GS.sf2",
         "/usr/share/sounds/sf2/fluid-soundfont-gm.sf2",
@@ -221,13 +232,12 @@ def midi_para_audio(midi_path: str, wav_path: str) -> str:
     sf2 = next((sf for sf in soundfonts if Path(sf).exists()), None)
 
     if not sf2:
-        # Se não encontrar SoundFont, o som não será gerado mas o app não deve travar
-        print("Aviso: SoundFont não encontrado. A síntese de áudio pode falhar.")
-        return midi_path
+        print("Erro: Nenhum SoundFont (.sf2) encontrado.")
+        return None
 
     try:
         FluidSynth(sf2).midi_to_audio(midi_path, wav_path)
         return wav_path
     except Exception as e:
         print(f"Erro na síntese de áudio: {e}")
-        return midi_path
+        return None
