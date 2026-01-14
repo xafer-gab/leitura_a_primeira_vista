@@ -1,6 +1,6 @@
 #Durações (semicolcheia = 1)
 dur_dic = {
-	"Semibreve pontuada": 20,
+	"Semibreve pontuada": 24,
 	"Semibreve": 16,
 	"Mínima pontuada": 12,
 	"Mínima": 8,
@@ -17,7 +17,7 @@ dur_dic = {
 
 #Dicionário de durações lilypond
 lilydur = {
-	20: "1.",
+	24: "1.",
 	16: "1",
 	12: "2.",
 	8: "2", 
@@ -64,6 +64,21 @@ agrupamento = {
     "5/16": [3, 2]
     }
 
+div_lily = {
+    "7/4": "1,1,1,1,1,1,1",
+    "6/4": "1,1,1,1,1,1",
+    "5/4": "1,1,1,1,1",
+    "4/4": "1,1,1,1",
+    "3/4": "1,1,1",
+    "2/4": "1,1",
+    "7/8": "2,2,3",
+    "6/8": "3,3",
+    "5/8": "3,2",
+    "3/8": "2,1",
+    "7/16": "4,3",
+    "5/16": "3,2"
+}
+
 #Quebras de compasso
 quebras = {
     "7/4": 1*(7*4),
@@ -79,4 +94,3 @@ quebras = {
     "7/16": 4*7,
     "5/16": 6*5
     }
-
