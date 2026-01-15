@@ -1,6 +1,7 @@
 # Leitura Musical Interativa e Algorítmica (LeIA)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18259589.svg)](https://doi.org/10.5281/zenodo.18259589)
+![Version](https://img.shields.io/badge/version-v1.0.0-blue)
 
 Interface de geração musical voltada ao estudo de leitura à primeira vista.
 
