@@ -1,4 +1,7 @@
 # Leitura Musical Interativa e Algorítmica (LeIA)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18259589.svg)](https://doi.org/10.5281/zenodo.18259589)
+
 Interface de geração musical voltada ao estudo de leitura à primeira vista.
 
 ### Descrição 
@@ -59,5 +62,12 @@ Os parâmetros consistem em:
 Após selecionar os parâmetros da geração, clicar em "gerar" para produzir o próximo exercício de leitura.
 
 ## Referências
-[Relatório técnico-pedagógico de LeIA](https://zenodo.org/records/18258255)
+XAVIER, Gabriel. **Leitura Musical Interativa e Algorítmica (LeIA)**: software livre para o estudo de leitura à primeira vista. Relatório Técnico. Zenodo, 2026. Disponível em: https://doi.org/10.5281/zenodo.18258255.
+
+XAVIER, Gabriel. **LeIA: Leitura Musical Interativa e Algorítmica (v1.0.0)**. Zenodo, 2026. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18259589.svg)](https://doi.org/10.5281/zenodo.18259589)
+
+
+
+
+
 
