@@ -1,36 +1,63 @@
-🎵 **Sight-Reading (Colab)**
+# Leitura Musical Interativa e Algorítmica (LeIA)
+Interface de geração musical voltada ao estudo de leitura à primeira vista.
 
-A Google Colab Notebook designed for sight-reading practice, focusing on the generation of random musical sequences and the visualization of music notation using *LilyPond*.
-This notebook allows musicians and music students to randomly generate rhythmic–melodic sequences with customized parameters (time signatures, note durations, and pitch sets).
-Through LilyPond notation, the content can be exported as PNG and .ly files.
+### Descrição 
+Para o estudo de leitura à primeira vista, o estudante defronta-se com a necessidade de selecionar excertos de repertório, exemplos de livros didáticos ou utilizar softwares de teoria musical. Nos três casos, a delimitação do contexto rítmico-harmônico é essencial para o desenvolvimento de metodologias adequadas às dificuldades de cada repertório. O software LeIA (Leitura Musical Interativa e Algorítmica) fora elaborado tendo este horizonte em vista: excertos musicais são gerados a partir da seleção de modelos harmônicos e padrões rítmicos, de modo que o estudante possa concentrar o estudo em certos elementos de percepção (e.g. modos eclesiásticos, estruturas tonais, séries dodecafônicas e combinações rítmicas complexas).
 
-The application has the features:
+## Instalação
+1. Crie e acesse o diretório que deseja instalar LeIA.
+2. Clone ou realize o download dos arquivos do repositório.
+3. Instale os requisitos mínimos no sistema.
+4. Configure e ative um ambiente virtual python (se aplicável)
+5. Instale as dependências.
+### Exemplo em Debian
+```bash
+#Crie e acesse um diretório
+dir=~/LeIA_LeituraMusical
+mkdir -p $dir && cd $dir
 
-  1. Support for multiple time signatures (e.g., 2/4, 3/4, 4/4, compound meters).
-  2. Configurable note values (minim, crotchet, quaver, semiquaver, dotted notes).
-  3. Multiple pitch sets including tonal and atonal options.
-  4. Randomized octave placement according to clef.
+#Download do repositório
+git clone https://github.com/xafer-gab/LEIA.git
+cd LEIA
 
----
+#Instalação de Lilypond e Fluidsynth
+sudo apt install -y lilypond fluidsynth
 
-**Usage**
+#Configurar e ativar ambiente virtual
+python -m venv venv
+source venv/bin/activate
 
-Open the notebook in Google Colab.
-Select your parameters:
+#Instalar bibliotecas requeridas
+pip install -r requirements.txt
+```
 
-  1. Clef (Treble, Bass, Alto)
-  2. Pitch set (e.g., C major, D major, atonal)
-  3. Number of octaves
-  4. Durations
-  5. Time signature
-  6. Number of measures
+## Inicialização
+Para iniciar o programa, basta executar o arquivo <code>main.py</code> localizado no diretório principal do projeto. A interface gradio será carregada e exibirá uma mensagem no terminal. Abra o link fornecido em seu browser para acessar a interface de LeIA.
+```bash
+#Executa o script de inicialização
+python main.py
+```
 
-Run the notebook cell and view or download the generated music.
 
----
+## Uso
+O software LeIA apresenta uma interface baseada em web (gradio) em que é possível selecionar um amplo conjunto de parâmetros para a geração de exemplos musicais. 
 
-**Requirements**
 
-Google Colab or a local Python environment with LilyPond 2.22.1 installed.
+Os parâmetros consistem em:
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/xafer-gab/leitura_a_primeira_vista/blob/main/Leitura_%C3%A0_primeira_vista_(LilyPond).ipynb)
+1. conjunto de escalas que abrange as linguagens tonais, modais e atonais;
+2. combinação de durações selecionáveis;
+3. seleção de fórmulas de compasso simples, compostas e irregulares (5/8, 7/16, etc.);
+4. seleção do número de oitavas;
+5. seleção entre clave de Sol, Fá e Dó e percussão;
+6. seleção do número de compassos gerados a cada exercício;
+7. modelo harmônico probabilístico (distribuição igual, tonal, serial, etc.);
+8. porcentagem de pausas em cada exercício;
+9. Dispersão melódica ou chance de salto entre oitavas;
+10. Ajuste de andamento e timbre para reprodução MIDI.
+
+Após selecionar os parâmetros da geração, clicar em "gerar" para produzir o próximo exercício de leitura.
+
+## Referências
+[Relatório técnico-pedagógico de LeIA](https://zenodo.org/records/18258255)
+
